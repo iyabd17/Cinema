@@ -387,7 +387,34 @@ public class Cinema {
 
     }
 
-    //TODO
+    private static ArrayList ListMembersOfGroup(Scanner scanner) throws SQLException {
+        System.out.println("What is the name of the group that you would like to list the members of?: ");
+
+        String groupName = scanner.nextLine();
+     	
+     	Connection db;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            db = DriverManager.getConnection(url, username, password);
+            st = db.createStatement();
+          	rs = st.executeQuery("SELECT uid FROM groupmembers WHERE groupname = ?");
+            }
+        } catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        
+        ArrayList<User> userlist = new ArrayList<>();
+		while (rs.next()) {
+            User new_user = getuser(rs.getInt(1));
+      	    userlist.add(new_user);		
+        }
+        rs.close();
+        
+        return userlist;
+    }
+
     private static ArrayList<Group> ListGroups() {
 
         LinkedList vars = new LinkedList();
